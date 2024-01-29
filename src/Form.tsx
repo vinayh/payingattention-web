@@ -1,3 +1,44 @@
-export default function Form() {
-    return <form> <input></input> <button type="submit"></button></form>
+import { useForm } from "@mantine/form"
+import { TextInput, Button, Grid } from "@mantine/core"
+import { FormEventHandler } from "react"
+
+export default function Form({ setAttnPatternRes }) {
+    const ATTN_PATTERN_ENDPOINT = "http://127.0.0.1:8000/attentionPatterns?prompt="
+
+    const form = useForm({
+        initialValues: { prompt: '' },
+        validate: { prompt: (prompt: string) => prompt.length > 0 ? null : "Prompt field must not be empty."}
+    })
+
+    const fetchAttnPattern = ({ prompt }: { prompt: string }) => {
+        console.log(prompt)
+        fetch(ATTN_PATTERN_ENDPOINT + prompt)
+                .then(res => {
+                    if (!res.ok) {
+                        form.setErrors({ submit: "Server error" })
+                        throw new Error(`Error in API response ${res.status}, ${res.text}`);
+                    }
+                    return res
+                })
+                .then(res => res.json())
+                .then(res => {
+                    setAttnPatternRes(res)
+                    console.log(res)
+                })
+                .catch(e => console.error('Error fetching attention patterns:', e))
+    }
+
+    return (
+        <form onSubmit={form.onSubmit((values) => fetchAttnPattern(values))}>
+            <Grid gutter={{ base: 5 }}>
+                <Grid.Col span="auto">
+                    <TextInput name="prompt" placeholder="Enter your prompt here..." {...form.getInputProps("prompt")} />
+                </Grid.Col>
+
+                <Grid.Col span={1.5} miw={90}>
+                    <Button name="submit" fullWidth type="submit">Submit</Button>
+                </Grid.Col>
+            </Grid>
+        </form>
+    )
 }
