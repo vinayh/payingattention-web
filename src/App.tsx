@@ -7,7 +7,7 @@ import AttentionPattern from "./AttentionPattern.tsx"
 import Form from "./Form.tsx"
 
 type LayerRes = {layer: number, pattern: number[][][][]}
-type AttnPatternRes = { prompt: string, n_layers: number, tokens: string[], patterns: LayerRes[]}
+export type AttnPatternRes = { prompt: string, n_layers: number, tokens: string[], patterns: LayerRes[]}
 
 export default function App() {
   const [attnPatternRes, setAttnPatternRes] = useState<AttnPatternRes>()
