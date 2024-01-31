@@ -4,7 +4,7 @@ import { SetStateAction, Dispatch } from "react"
 
 import { AttnPatternRes } from "./App"
 
-export default function Form({ setAttnPatternRes } : { setAttnPatternRes: Dispatch<SetStateAction<AttnPatternRes>> }) {
+export default function Form({ setAttnPatternRes } : { setAttnPatternRes: Dispatch<SetStateAction<AttnPatternRes | null>> }) {
     const ATTN_PATTERN_ENDPOINT = "http://127.0.0.1:8000/attentionPatterns?prompt="
     const form = useForm({
         initialValues: { prompt: '' },

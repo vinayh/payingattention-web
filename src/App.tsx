@@ -10,7 +10,7 @@ type LayerRes = {layer: number, pattern: number[][][][]}
 export type AttnPatternRes = { prompt: string, n_layers: number, tokens: string[], patterns: LayerRes[]}
 
 export default function App() {
-  const [attnPatternRes, setAttnPatternRes] = useState<AttnPatternRes>()
+  const [attnPatternRes, setAttnPatternRes] = useState<AttnPatternRes | null>(null)
 
   return <MantineProvider theme={theme}>
     <AppShell header={{ height: 60 }} padding="md">
@@ -26,7 +26,7 @@ export default function App() {
         <Container bg="var(--mantine-color-gray-light)" px={20} py={40}>
           <Stack>
             <Form setAttnPatternRes={setAttnPatternRes} />
-            <AttentionPattern />
+            <AttentionPattern attnPatternRes={attnPatternRes} />
           </Stack>
         </Container>
       </AppShell.Main>
