@@ -4,11 +4,7 @@ import { SetStateAction, Dispatch } from "react"
 
 import { AttnPatternRes } from "./App"
 
-export function Form({
-    setAttnPatternRes,
-}: {
-    setAttnPatternRes: Dispatch<SetStateAction<AttnPatternRes | null>>
-}) {
+export function Form() {
     const ATTN_PATTERN_ENDPOINT =
         "http://127.0.0.1:8000/attentionPatterns?prompt="
     const form = useForm({
@@ -18,29 +14,29 @@ export function Form({
                 prompt.length > 0 ? null : "Prompt field must not be empty.",
         },
     })
-    const fetchAttnPattern = ({ prompt }: { prompt: string }) => {
-        console.log(prompt)
-        fetch(ATTN_PATTERN_ENDPOINT + prompt)
-            .then(res => {
-                if (!res.ok) {
-                    form.setErrors({ submit: "Server error" })
-                    throw new Error(
-                        `Error in API response ${res.status}, ${res.text}`
-                    )
-                }
-                return res
-            })
-            .then(res => res.json())
-            .then(res => {
-                setAttnPatternRes(res)
-            })
-            .catch(e =>
-                form.setFieldError(
-                    "prompt",
-                    `Error fetching attention patterns: ${e.message}`
-                )
-            )
-    }
+    // const fetchAttnPattern = ({ prompt }: { prompt: string }) => {
+    //     console.log(prompt)
+    //     fetch(ATTN_PATTERN_ENDPOINT + prompt)
+    //         .then(res => {
+    //             if (!res.ok) {
+    //                 form.setErrors({ submit: "Server error" })
+    //                 throw new Error(
+    //                     `Error in API response ${res.status}, ${res.text}`
+    //                 )
+    //             }
+    //             return res
+    //         })
+    //         .then(res => res.json())
+    //         .then(res => {
+    //             setAttnPatternRes(res)
+    //         })
+    //         .catch(e =>
+    //             form.setFieldError(
+    //                 "prompt",
+    //                 `Error fetching attention patterns: ${e.message}`
+    //             )
+    //         )
+    // }
 
     return (
         <form onSubmit={form.onSubmit(values => fetchAttnPattern(values))}>
