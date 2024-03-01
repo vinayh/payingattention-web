@@ -1,14 +1,23 @@
 import { useState } from "react"
 import { Container, ScrollArea, Tabs } from "@mantine/core"
 import { AttentionHeads } from "circuitsvis"
-import { useAttentionState } from "./store"
+import { LayerRes, useAttentionState } from "./store"
 
 export default function AttentionPattern() {
     const [activeTab, setActiveTab] = useState<string | null>(null)
-    const { attnPattern, setPrompt } = useAttentionState()
-    const p = attnPattern?.patterns[parseInt(activeTab ?? "0")]
+    const { attnPattern } = useAttentionState()
 
-    if (p) {
+    const renderPattern = (pattern: LayerRes, tokens: string[]) => {
+        return (
+            <AttentionHeads
+                key={pattern.layer}
+                attention={pattern.pattern[0]}
+                tokens={tokens}
+            />
+        )
+    }
+
+    if (attnPattern) {
         return (
             <>
                 <Tabs
@@ -28,11 +37,12 @@ export default function AttentionPattern() {
 
                     <Container fluid>
                         <ScrollArea h={1000} p={20}>
-                            <AttentionHeads
-                                key={p.layer}
-                                attention={p.pattern[0]}
-                                tokens={attnPattern.tokens}
-                            />
+                            {renderPattern(
+                                attnPattern.patterns[
+                                    parseInt(activeTab ?? "0")
+                                ],
+                                attnPattern.tokens
+                            )}
                         </ScrollArea>
                     </Container>
                 </Tabs>

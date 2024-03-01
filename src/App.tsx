@@ -1,13 +1,10 @@
-import { useState } from "react"
 import { theme } from "./theme"
-import "@mantine/core/styles.css"
 import { MantineProvider, AppShell, Stack, Box } from "@mantine/core"
+import "@mantine/core/styles.css"
 
 import AttentionPattern from "./AttentionPattern.tsx"
-import { Navbar } from "./Navbar.tsx"
-import { Form } from "./Form.tsx"
-
-
+import Navbar from "./Navbar.tsx"
+import Form from "./Form.tsx"
 
 export default function App() {
     return (

@@ -1,45 +1,25 @@
 import { useForm } from "@mantine/form"
 import { TextInput, Button, Grid } from "@mantine/core"
-import { SetStateAction, Dispatch } from "react"
+import { useAttentionState } from "./store"
 
-import { AttnPatternRes } from "./App"
-
-export function Form() {
-    const ATTN_PATTERN_ENDPOINT =
-        "http://127.0.0.1:8000/attentionPatterns?prompt="
+export default function Form() {
+    const { prompt, setPrompt, fetchAttnPattern } = useAttentionState()
     const form = useForm({
-        initialValues: { prompt: "" },
+        initialValues: { prompt: prompt },
         validate: {
             prompt: (prompt: string) =>
                 prompt.length > 0 ? null : "Prompt field must not be empty.",
         },
     })
-    // const fetchAttnPattern = ({ prompt }: { prompt: string }) => {
-    //     console.log(prompt)
-    //     fetch(ATTN_PATTERN_ENDPOINT + prompt)
-    //         .then(res => {
-    //             if (!res.ok) {
-    //                 form.setErrors({ submit: "Server error" })
-    //                 throw new Error(
-    //                     `Error in API response ${res.status}, ${res.text}`
-    //                 )
-    //             }
-    //             return res
-    //         })
-    //         .then(res => res.json())
-    //         .then(res => {
-    //             setAttnPatternRes(res)
-    //         })
-    //         .catch(e =>
-    //             form.setFieldError(
-    //                 "prompt",
-    //                 `Error fetching attention patterns: ${e.message}`
-    //             )
-    //         )
-    // }
+    
+    const onSubmitPrompt = (values: { prompt: string }) => {
+        console.log("Setting prompt: " + values.prompt)
+        setPrompt(values.prompt)
+        fetchAttnPattern()
+    }
 
     return (
-        <form onSubmit={form.onSubmit(values => fetchAttnPattern(values))}>
+        <form onSubmit={form.onSubmit(onSubmitPrompt)}>
             <Grid gutter={{ base: 5 }}>
                 <Grid.Col span="auto">
                     <TextInput

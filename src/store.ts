@@ -2,7 +2,7 @@ import { create } from "zustand"
 
 const ATTN_PATTERN_ENDPOINT = "http://127.0.0.1:8000/attentionPatterns?prompt="
 
-type LayerRes = { layer: number; pattern: number[][][][] }
+export type LayerRes = { layer: number; pattern: number[][][][] }
 export type AttnPatternRes = {
     prompt: string
     n_layers: number
@@ -11,23 +11,26 @@ export type AttnPatternRes = {
 }
 
 interface AttentionState {
-    prompt: string | null
+    prompt: string
     attnPattern: AttnPatternRes | null
     setPrompt: (prompt: string) => void
     fetchAttnPattern: () => Promise<AttnPatternRes>
 }
 
-export const useAttentionState = create<AttentionState>(set => {
+export const useAttentionState = create<AttentionState>((set, get) => {
     return {
-        prompt: null,
+        prompt: "",
         attnPattern: null,
         setPrompt: (prompt: string) => {
-            set({ prompt: prompt })
+            console.log("prompt input is: " + prompt)
+            set(() => ({ prompt: prompt }))
         },
         fetchAttnPattern: async () => {
+            const prompt = get().prompt
             if (!prompt) {
                 throw new Error("No prompt set")
             }
+            console.log("Fetching for prompt with URL: " + ATTN_PATTERN_ENDPOINT + prompt)
             const fetchedPattern = await fetch(ATTN_PATTERN_ENDPOINT + prompt)
                 .then(res => {
                     if (!res.ok) {
