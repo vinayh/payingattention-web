@@ -1,5 +1,6 @@
 import { useForm } from "@mantine/form"
 import { TextInput, Button, Grid } from "@mantine/core"
+
 import { useAttentionState } from "./store"
 
 export default function Form() {
@@ -13,7 +14,6 @@ export default function Form() {
     })
     
     const onSubmitPrompt = (values: { prompt: string }) => {
-        console.log("Setting prompt: " + values.prompt)
         setPrompt(values.prompt)
         fetchAttnPattern()
     }

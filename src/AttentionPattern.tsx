@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Container, ScrollArea, Tabs } from "@mantine/core"
 import { AttentionHeads } from "circuitsvis"
+
 import { LayerRes, useAttentionState } from "./store"
 
 export default function AttentionPattern() {

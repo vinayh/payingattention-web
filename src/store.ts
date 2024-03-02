@@ -22,16 +22,16 @@ export const useAttentionState = create<AttentionState>((set, get) => {
         prompt: "",
         attnPattern: null,
         setPrompt: (prompt: string) => {
-            console.log("prompt input is: " + prompt)
-            set(() => ({ prompt: prompt }))
+            console.log("Set prompt to: " + prompt)
+            set({ prompt: prompt })
         },
         fetchAttnPattern: async () => {
             const prompt = get().prompt
             if (!prompt) {
                 throw new Error("No prompt set")
             }
-            console.log("Fetching for prompt with URL: " + ATTN_PATTERN_ENDPOINT + prompt)
-            const fetchedPattern = await fetch(ATTN_PATTERN_ENDPOINT + prompt)
+            console.log("Fetching for prompt: " + prompt)
+            const fetchedPattern = await fetch(ATTN_PATTERN_ENDPOINT + encodeURIComponent(prompt))
                 .then(res => {
                     if (!res.ok) {
                         throw new Error(
